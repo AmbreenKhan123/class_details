@@ -101,6 +101,9 @@
 
         });
         let someValue = 1;
+ 
+
+        
 
         $("#button1").on('click', function() {
             $('#myTable tr:last').after('<tr><td>' + someValue + '</td><td>\

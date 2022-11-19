@@ -1,9 +1,9 @@
 <?php
-$con = mysqli_connect("localhost","root","","test_db");
+$con = mysqli_connect("localhost", "root", "", "test_db");
 if (!$con) {
-  echo "failed";
+    echo "failed";
 } else {
-  // echo "successful";
+    // echo "successful";
 }
 
 
@@ -15,13 +15,13 @@ if (!$con) {
 // $st_subj = mysqli_query($con,$query2);
 // $row_subj= mysqli_fetch_array($st_subj);
 
-$result = mysqli_query($con,"SELECT * FROM st_form WHERE id='" . $_GET['id'] . "'");
+$result = mysqli_query($con, "SELECT * FROM st_form WHERE id='" . $_GET['id'] . "'");
 
-$row= mysqli_fetch_array($result);
+$row = mysqli_fetch_array($result);
 
-$st_subj = mysqli_query($con,"SELECT * FROM st_sbject WHERE st_id='" . $_GET['id'] . "'");
+$st_subj = mysqli_query($con, "SELECT * FROM st_sbject WHERE st_id='" . $_GET['id'] . "'");
 
-$row_subj= mysqli_fetch_array($st_subj);
+$row_subj = mysqli_fetch_array($st_subj);
 
 // print_r(($row_subj));
 // die;
@@ -45,67 +45,78 @@ $row_subj= mysqli_fetch_array($st_subj);
 <!-- Main Body -->
 
 <body>
+    <div class="container">
+        <center>
+            <div class="row">
+                <h1>Update Student Form</h1>
+            </div>
 
-    <div class="box1">
-        <h1 style="padding-left:480px ; padding-top: 50px;">Update Student Form</h1>
+            <form style="width:50%;" method="POST" action="code.php" id="form1">
+
+
+                <div class="row">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input type="hidden" class="form-control" value="<?php echo $row['id']; ?>" name="st_id">
+                            <input type="text" class="form-control" value="<?php echo $row['st_name']; ?>" name="st_name" placeholder="Student Name" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="number" class="form-control" value="<?php echo $row['roll_no']; ?>" name="roll_no" placeholder="Roll No" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" value="<?php echo $row['st_class']; ?>" name="st_class" placeholder="Class" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" value="<?php echo $row['st_section']; ?>" name="st_section" placeholder="Section" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <button type="button" id="button1" class="btn btn-primary">Add Subject</button>
+                        </div>
+
+                        <table class="table" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Subject No</th>
+                                    <th>Subject Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($st_subj as $key => $value) {
+                                ?>
+                                    <tr>
+                                        <td><?php echo $key + 1 ?></td>
+                                        <td>
+                                            <input type="hidden" class="form-control" value="<?php echo $value['id']; ?>" name="sbj_id">
+                                            <input type="text" class="form-control" value="<?php echo $value['sbj_code']; ?>" name="sbj_code[]" placeholder="Subject Code">
+                                        </td>
+                                        <td><input type="text" class="form-control" value="<?php echo $value['sbj_name']; ?>" name="sbj_name[]" placeholder="Subject Name"></td>
+                                        <td><button type="button" id="button1" class="remove-btn btn btn-danger">Remove</button></td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+
+                        </table>
+                        <div class="form-group col-md-12">
+                            <input type="submit" value="Update" name="submit_update" class="btn btn-primary">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </center>
+
     </div>
-    <center>
-        <form style="width:50%;" method="POST" action="code.php" id="form1">
-
-
-
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                <input type="hidden" class="form-control" value="<?php echo $row['id']; ?>" name="st_id">
-                    <input type="text" class="form-control" value="<?php echo $row['st_name']; ?>" name="st_name" placeholder="Student Name" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <input type="number" class="form-control" value="<?php echo $row['roll_no']; ?>" name="roll_no" placeholder="Roll No" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <input type="text" class="form-control" value="<?php echo $row['st_class']; ?>" name="st_class" placeholder="Class" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <input type="text" class="form-control" value="<?php echo $row['st_section']; ?>" name="st_section" placeholder="Section" required>
-                </div>
-            </div>
-
-
-            <button type="button" id="button1" class="btn btn-primary" style="margin-left:500px ;">Update Subject</button>
-
-
-            <table class="table" id="myTable">
-                <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Subject No</th>
-                        <th>Subject Name</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
-                foreach ($st_subj as $key => $value) {
-                ?>
-                <tr><td><?php echo $key+1 ?></td><td>
-                <input type="hidden" class="form-control" value="<?php echo $value['id']; ?>" name="sbj_id">
-                <input type="text" class="form-control" value="<?php echo $value['sbj_code']; ?>"  name="sbj_code[]" placeholder="Subject Code"></td>
-                <td><input type="text" class="form-control" value="<?php echo $value['sbj_name']; ?>" name="sbj_name[]" placeholder="Subject Name"></td>
-                <td><button type="button" id="button1" class="remove-btn btn btn-danger">Remove</button></td></tr>
-                <?php
-                }
-                ?>
-                </tbody>
-
-            </table>
-            <input type="submit" value="Update" name="submit_update" class="btn btn-primary" style="margin-left:500px; width:100px;">
-        </form>
-    </center>
-
-    
 </body>
 
 
@@ -129,4 +140,3 @@ $row_subj= mysqli_fetch_array($st_subj);
         });
     })
 </script>
-
